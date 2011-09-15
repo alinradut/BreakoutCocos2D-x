@@ -41,26 +41,26 @@ HelloWorld::HelloWorld()
 	// Call the body factory which allocates memory for the ground body
 	// from a pool and creates the ground box shape (also from a pool).
 	// The body is also added to the world.
-	b2Body* groundBody = _world->CreateBody(&groundBodyDef);
+	_groundBody = _world->CreateBody(&groundBodyDef);
 	
 	// Define the ground box shape.
 	b2PolygonShape groundBox;		
 	
 	// bottom
 	groundBox.SetAsEdge(b2Vec2(0,0), b2Vec2(winSize.width/PTM_RATIO,0));
-	groundBody->CreateFixture(&groundBox, 0);
+	_groundBody->CreateFixture(&groundBox, 0);
 	
 	// top
 	groundBox.SetAsEdge(b2Vec2(0,winSize.height/PTM_RATIO), b2Vec2(winSize.width/PTM_RATIO,winSize.height/PTM_RATIO));
-	groundBody->CreateFixture(&groundBox, 0);
+	_groundBody->CreateFixture(&groundBox, 0);
 	
 	// left
 	groundBox.SetAsEdge(b2Vec2(0,winSize.height/PTM_RATIO), b2Vec2(0,0));
-	groundBody->CreateFixture(&groundBox, 0);
+	_groundBody->CreateFixture(&groundBox, 0);
 	
 	// right
 	groundBox.SetAsEdge(b2Vec2(winSize.width/PTM_RATIO,winSize.height/PTM_RATIO), b2Vec2(winSize.width/PTM_RATIO,0));
-	groundBody->CreateFixture(&groundBox, 0);
+	_groundBody->CreateFixture(&groundBox, 0);
     
     // Create sprite and add it to the layer
 	CCSprite *ball = CCSprite::spriteWithFile("Ball.jpg");
@@ -115,6 +115,10 @@ HelloWorld::HelloWorld()
     paddleShapeDef.restitution = 0.1f;
     _paddleFixture = _paddleBody->CreateFixture(&paddleShapeDef);
     
+
+    // in C++ you need to initialize objects to NULL
+    _mouseJoint = NULL;
+    
     this->schedule(schedule_selector(HelloWorld::tick));
 }
 
@@ -158,9 +162,56 @@ void HelloWorld::tick(ccTime dt)
 	}
 }
 
+void HelloWorld::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
+{
+    if (_mouseJoint != NULL) return;
+    
+    CCTouch *myTouch = (CCTouch *)touches->anyObject();
+    CCPoint location = myTouch->locationInView(myTouch->view());
+    location = CCDirector::sharedDirector()->convertToGL(location);
+    b2Vec2 locationWorld = b2Vec2(location.x/PTM_RATIO, location.y/PTM_RATIO);
+    
+    if (_paddleFixture->TestPoint(locationWorld)) {
+        b2MouseJointDef md;
+        md.bodyA = _groundBody;
+        md.bodyB = _paddleBody;
+        md.target = locationWorld;
+        md.collideConnected = true;
+        md.maxForce = 1000.0f * _paddleBody->GetMass();
+        
+        _mouseJoint = (b2MouseJoint *)_world->CreateJoint(&md);
+        _paddleBody->SetAwake(true);
+    }
+}
+
+void HelloWorld::ccTouchesMoved(CCSet* touches, CCEvent* event)
+{
+    if (_mouseJoint == NULL) return;
+    
+    CCTouch *myTouch = (CCTouch *)touches->anyObject();
+    CCPoint location = myTouch->locationInView(myTouch->view());
+    location = CCDirector::sharedDirector()->convertToGL(location);
+    b2Vec2 locationWorld = b2Vec2(location.x/PTM_RATIO, location.y/PTM_RATIO);
+
+    _mouseJoint->SetTarget(locationWorld);
+}
+
+void HelloWorld::ccTouchesCancelled(CCSet* touches, CCEvent* event)
+{
+    if (_mouseJoint) 
+    {
+        _world->DestroyJoint(_mouseJoint);
+        _mouseJoint = NULL;
+    }
+}
+
 void HelloWorld::ccTouchesEnded(CCSet* touches, CCEvent* event)
 {
-
+    if (_mouseJoint) 
+    {
+        _world->DestroyJoint(_mouseJoint);
+        _mouseJoint = NULL;
+    }  
 }
 
 CCScene* HelloWorld::scene()

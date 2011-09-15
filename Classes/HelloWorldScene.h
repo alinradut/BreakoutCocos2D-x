@@ -20,6 +20,9 @@ public:
     static cocos2d::CCScene* scene();
 
     virtual void draw();
+    virtual void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
+    virtual void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
+    virtual void ccTouchesCancelled(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
     virtual void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
     void tick(cocos2d::ccTime dt);
     
@@ -30,6 +33,7 @@ private:
     b2Fixture *_ballFixture;
     b2Body *_paddleBody;
     b2Fixture *_paddleFixture;
+    b2MouseJoint *_mouseJoint;
 };
 
 #endif // __HELLO_WORLD_H__
