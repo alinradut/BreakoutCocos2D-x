@@ -43,6 +43,7 @@ public class BreakoutCocos2Dx extends Cocos2dxActivity{
 	 }
 	
      static {
+    	 System.loadLibrary("box2d");
     	 System.loadLibrary("cocos2d");
     	 System.loadLibrary("cocosdenshion");
          System.loadLibrary("game");
