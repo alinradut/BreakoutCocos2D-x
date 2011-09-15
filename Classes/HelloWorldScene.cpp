@@ -10,46 +10,30 @@
 using namespace cocos2d;
 
 #define PTM_RATIO 32
-enum 
+
+HelloWorld::~HelloWorld()
 {
-	kTagTileMap = 1,
-	kTagSpriteManager = 1,
-	kTagAnimation1 = 1,
-}; 
+    CC_SAFE_DELETE(_world);
+    _groundBody = NULL;
+}
 
 HelloWorld::HelloWorld()
 {
-	setIsTouchEnabled( true );
-	setIsAccelerometerEnabled( true );
+    setIsTouchEnabled( true );
     
 	CCSize screenSize = CCDirector::sharedDirector()->getWinSize();
-	//UXLOG(L"Screen width %0.2f screen height %0.2f",screenSize.width,screenSize.height);
     
 	// Define the gravity vector.
 	b2Vec2 gravity;
-	gravity.Set(0.0f, -10.0f);
+	gravity.Set(0.0f, 0.0f);
 	
 	// Do we want to let bodies sleep?
 	bool doSleep = true;
     
 	// Construct a world object, which will hold and simulate the rigid bodies.
-	world = new b2World(gravity, doSleep);
+	_world = new b2World(gravity, doSleep);
     
-	world->SetContinuousPhysics(true);
-    
-    /*	
-     m_debugDraw = new GLESDebugDraw( PTM_RATIO );
-     world->SetDebugDraw(m_debugDraw);
-     
-     uint flags = 0;
-     flags += b2DebugDraw::e_shapeBit;
-     flags += b2DebugDraw::e_jointBit;
-     flags += b2DebugDraw::e_aabbBit;
-     flags += b2DebugDraw::e_pairBit;
-     flags += b2DebugDraw::e_centerOfMassBit;
-     m_debugDraw->SetFlags(flags);		
-     */
-	
+    // Create edges around the entire screen
 	// Define the ground body.
 	b2BodyDef groundBodyDef;
 	groundBodyDef.position.Set(0, 0); // bottom-left corner
@@ -57,7 +41,7 @@ HelloWorld::HelloWorld()
 	// Call the body factory which allocates memory for the ground body
 	// from a pool and creates the ground box shape (also from a pool).
 	// The body is also added to the world.
-	b2Body* groundBody = world->CreateBody(&groundBodyDef);
+	b2Body* groundBody = _world->CreateBody(&groundBodyDef);
 	
 	// Define the ground box shape.
 	b2PolygonShape groundBox;		
@@ -78,35 +62,40 @@ HelloWorld::HelloWorld()
 	groundBox.SetAsEdge(b2Vec2(screenSize.width/PTM_RATIO,screenSize.height/PTM_RATIO), b2Vec2(screenSize.width/PTM_RATIO,0));
 	groundBody->CreateFixture(&groundBox, 0);
     
-	
-	//Set up sprite
-	
-	CCSpriteBatchNode *mgr = CCSpriteBatchNode::batchNodeWithFile("blocks.png", 150);
-	addChild(mgr, 0, kTagSpriteManager);
-	
-	addNewSpriteWithCoords( CCPointMake(screenSize.width/2, screenSize.height/2) );
-	
-	CCLabelTTF *label = CCLabelTTF::labelWithString("Tap screen", "Marker Felt", 32);
-	addChild(label, 0);
-	label->setColor( ccc3(0,0,255) );
-	label->setPosition( CCPointMake( screenSize.width/2, screenSize.height-50) );
-	
-	schedule( schedule_selector(HelloWorld::tick) );
-}
-
-HelloWorld::~HelloWorld()
-{
-	delete world;
-	world = NULL;
-	
-	//delete m_debugDraw;
+    // Create sprite and add it to the layer
+	CCSprite *ball = CCSprite::spriteWithFile("Ball.jpg");
+    ball->setPosition(ccp(100, 100));
+    ball->setTag(1);
+    this->addChild(ball);
+    
+    // Create ball body
+    b2BodyDef ballBodyDef;
+    ballBodyDef.type = b2_dynamicBody;
+    ballBodyDef.position.Set(100/PTM_RATIO, 100/PTM_RATIO);
+    ballBodyDef.userData = ball;
+    
+    b2Body *ballBody = _world->CreateBody(&ballBodyDef);
+    
+    // Create circle shape
+    b2CircleShape circle;
+    circle.m_radius = 26.0/PTM_RATIO;
+    
+    // Create shape definition and add body
+    b2FixtureDef ballShapeDef;
+    ballShapeDef.shape = &circle;
+    ballShapeDef.density = 1.0f;
+    ballShapeDef.friction = 0.f;
+    ballShapeDef.restitution = 1.0f;
+    _ballFixture = ballBody->CreateFixture(&ballShapeDef);
+    
+    b2Vec2 force = b2Vec2(10, 10);
+    ballBody->ApplyLinearImpulse(force, ballBodyDef.position);
+    
+    this->schedule(schedule_selector(HelloWorld::tick));
 }
 
 void HelloWorld::draw()
 {
-	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
-	// Needed states:  GL_VERTEX_ARRAY, 
-	// Unneeded states: GL_TEXTURE_2D, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
 	glDisable(GL_TEXTURE_2D);
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -118,41 +107,6 @@ void HelloWorld::draw()
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);	
 }
-
-void HelloWorld::addNewSpriteWithCoords(CCPoint p)
-{
-	//UXLOG(L"Add sprite %0.2f x %02.f",p.x,p.y);
-	CCSpriteBatchNode* sheet = (CCSpriteBatchNode*)getChildByTag(kTagSpriteManager);
-	
-	//We have a 64x64 sprite sheet with 4 different 32x32 images.  The following code is
-	//just randomly picking one of the images
-	int idx = (CCRANDOM_0_1() > .5 ? 0:1);
-	int idy = (CCRANDOM_0_1() > .5 ? 0:1);
-	CCSprite *sprite = CCSprite::spriteWithBatchNode(sheet, CCRectMake(32 * idx,32 * idy,32,32));
-	sheet->addChild(sprite);
-	
-	sprite->setPosition( CCPointMake( p.x, p.y) );
-	
-	// Define the dynamic body.
-	//Set up a 1m squared box in the physics world
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(p.x/PTM_RATIO, p.y/PTM_RATIO);
-	bodyDef.userData = sprite;
-	b2Body *body = world->CreateBody(&bodyDef);
-	
-	// Define another box shape for our dynamic body.
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(.5f, .5f);//These are mid points for our 1m box
-	
-	// Define the dynamic body fixture.
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;	
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
-	body->CreateFixture(&fixtureDef);
-}
-
 
 void HelloWorld::tick(ccTime dt)
 {
@@ -166,10 +120,10 @@ void HelloWorld::tick(ccTime dt)
     
 	// Instruct the world to perform a single step of simulation. It is
 	// generally best to keep the time step and iterations fixed.
-	world->Step(dt, velocityIterations, positionIterations);
+	_world->Step(dt, velocityIterations, positionIterations);
 	
 	//Iterate over the bodies in the physics world
-	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
+	for (b2Body* b = _world->GetBodyList(); b; b = b->GetNext())
 	{
 		if (b->GetUserData() != NULL) {
 			//Synchronize the AtlasSprites position and rotation with the corresponding body
@@ -182,23 +136,7 @@ void HelloWorld::tick(ccTime dt)
 
 void HelloWorld::ccTouchesEnded(CCSet* touches, CCEvent* event)
 {
-	//Add a new body/atlas sprite at the touched location
-	CCSetIterator it;
-	CCTouch* touch;
-    
-	for( it = touches->begin(); it != touches->end(); it++) 
-	{
-		touch = (CCTouch*)(*it);
-        
-		if(!touch)
-			break;
-        
-		CCPoint location = touch->locationInView(touch->view());
-		
-		location = CCDirector::sharedDirector()->convertToGL(location);
-        
-		addNewSpriteWithCoords( location );
-	}
+
 }
 
 CCScene* HelloWorld::scene()
