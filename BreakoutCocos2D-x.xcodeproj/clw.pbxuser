@@ -1,0 +1,91 @@
+// !$*UTF8*$!
+{
+	1D6058900D05DD3D006BFB54 /* BreakoutCocos2D-x */ = {
+		activeExec = 0;
+		executables = (
+			3BE74C47142290CA001664CC /* BreakoutCocos2D-x */,
+		);
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = 3BE74C47142290CA001664CC /* BreakoutCocos2D-x */;
+		activeTarget = 1D6058900D05DD3D006BFB54 /* BreakoutCocos2D-x */;
+		codeSenseManager = 3BE74C61142290D2001664CC /* Code sense */;
+		executables = (
+			3BE74C47142290CA001664CC /* BreakoutCocos2D-x */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					341,
+					20,
+					48.16259765625,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 337809610;
+			PBXWorkspaceStateSaveDate = 337809610;
+		};
+		sourceControlManager = 3BE74C60142290D2001664CC /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	3BE74C47142290CA001664CC /* BreakoutCocos2D-x */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = "BreakoutCocos2D-x";
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	3BE74C60142290D2001664CC /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	3BE74C61142290D2001664CC /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	506EE05D10304ED200A389B3 /* cocos2d libraries */ = {
+		activeExec = 0;
+	};
+}
