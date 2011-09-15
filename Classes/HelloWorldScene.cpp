@@ -21,7 +21,7 @@ HelloWorld::HelloWorld()
 {
     setIsTouchEnabled( true );
     
-	CCSize screenSize = CCDirector::sharedDirector()->getWinSize();
+	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
     
 	// Define the gravity vector.
 	b2Vec2 gravity;
@@ -47,19 +47,19 @@ HelloWorld::HelloWorld()
 	b2PolygonShape groundBox;		
 	
 	// bottom
-	groundBox.SetAsEdge(b2Vec2(0,0), b2Vec2(screenSize.width/PTM_RATIO,0));
+	groundBox.SetAsEdge(b2Vec2(0,0), b2Vec2(winSize.width/PTM_RATIO,0));
 	groundBody->CreateFixture(&groundBox, 0);
 	
 	// top
-	groundBox.SetAsEdge(b2Vec2(0,screenSize.height/PTM_RATIO), b2Vec2(screenSize.width/PTM_RATIO,screenSize.height/PTM_RATIO));
+	groundBox.SetAsEdge(b2Vec2(0,winSize.height/PTM_RATIO), b2Vec2(winSize.width/PTM_RATIO,winSize.height/PTM_RATIO));
 	groundBody->CreateFixture(&groundBox, 0);
 	
 	// left
-	groundBox.SetAsEdge(b2Vec2(0,screenSize.height/PTM_RATIO), b2Vec2(0,0));
+	groundBox.SetAsEdge(b2Vec2(0,winSize.height/PTM_RATIO), b2Vec2(0,0));
 	groundBody->CreateFixture(&groundBox, 0);
 	
 	// right
-	groundBox.SetAsEdge(b2Vec2(screenSize.width/PTM_RATIO,screenSize.height/PTM_RATIO), b2Vec2(screenSize.width/PTM_RATIO,0));
+	groundBox.SetAsEdge(b2Vec2(winSize.width/PTM_RATIO,winSize.height/PTM_RATIO), b2Vec2(winSize.width/PTM_RATIO,0));
 	groundBody->CreateFixture(&groundBox, 0);
     
     // Create sprite and add it to the layer
@@ -90,6 +90,30 @@ HelloWorld::HelloWorld()
     
     b2Vec2 force = b2Vec2(10, 10);
     ballBody->ApplyLinearImpulse(force, ballBodyDef.position);
+    
+    CCSprite *paddle = CCSprite::spriteWithFile("Paddle.jpg");
+    paddle->setPosition(ccp(winSize.width/2, 50));
+    this->addChild(paddle);
+    
+    // Create paddle body
+    b2BodyDef paddleBodyDef;
+    paddleBodyDef.type = b2_dynamicBody;
+    paddleBodyDef.position.Set(winSize.width/2/PTM_RATIO, 50/PTM_RATIO);
+    paddleBodyDef.userData = paddle;
+    _paddleBody = _world->CreateBody(&paddleBodyDef);
+    
+    // Create paddle shape
+    b2PolygonShape paddleShape;
+    paddleShape.SetAsBox(paddle->getContentSize().width/PTM_RATIO/2, 
+                         paddle->getContentSize().height/PTM_RATIO/2);
+    
+    // Create shape definition and add to body
+    b2FixtureDef paddleShapeDef;
+    paddleShapeDef.shape = &paddleShape;
+    paddleShapeDef.density = 10.0f;
+    paddleShapeDef.friction = 0.4f;
+    paddleShapeDef.restitution = 0.1f;
+    _paddleFixture = _paddleBody->CreateFixture(&paddleShapeDef);
     
     this->schedule(schedule_selector(HelloWorld::tick));
 }
