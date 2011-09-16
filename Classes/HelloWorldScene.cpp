@@ -196,6 +196,8 @@ void HelloWorld::tick(ccTime dt)
 	// generally best to keep the time step and iterations fixed.
 	_world->Step(dt, velocityIterations, positionIterations);
 	
+    bool blockFound = false;
+    
 	//Iterate over the bodies in the physics world
 	for (b2Body* b = _world->GetBodyList(); b; b = b->GetNext())
 	{
@@ -217,6 +219,10 @@ void HelloWorld::tick(ccTime dt)
                     b->SetLinearDamping(0.0);
                 }
                 
+            }
+            
+            if (myActor->getTag() == 2) {
+                blockFound = true;
             }
 		}	
 	}
@@ -265,6 +271,13 @@ void HelloWorld::tick(ccTime dt)
             this->removeChild(sprite, true);
         }
         _world->DestroyBody(body);
+    }
+    
+    if (!blockFound)
+    {
+        GameOverScene *gameOverScene = GameOverScene::node();
+        gameOverScene->getLayer()->getLabel()->setString("You Win!");
+        CCDirector::sharedDirector()->replaceScene(gameOverScene);
     }
 }
 
