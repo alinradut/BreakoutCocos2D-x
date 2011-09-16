@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3B493755142325B400ACA725 /* MyContactListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B493753142325B400ACA725 /* MyContactListener.cpp */; };
+		3B49376414232BBB00ACA725 /* GameOverScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B49376314232BBB00ACA725 /* GameOverScene.cpp */; };
 		3B8F907E142295AC00EDBF11 /* Ball.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3B8F907D142295AC00EDBF11 /* Ball.jpg */; };
 		3B8F908C14229BE900EDBF11 /* Paddle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3B8F908B14229BE900EDBF11 /* Paddle.jpg */; };
 		505574581045D68500A31725 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 506EDBA4102F4C9F00A389B3 /* AVFoundation.framework */; };
@@ -377,6 +378,8 @@
 		1D6058910D05DD3D006BFB54 /* BreakoutCocos2D-x.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BreakoutCocos2D-x.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B493753142325B400ACA725 /* MyContactListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyContactListener.cpp; sourceTree = "<group>"; };
 		3B493754142325B400ACA725 /* MyContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyContactListener.h; sourceTree = "<group>"; };
+		3B49376214232BBB00ACA725 /* GameOverScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOverScene.h; sourceTree = "<group>"; };
+		3B49376314232BBB00ACA725 /* GameOverScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameOverScene.cpp; sourceTree = "<group>"; };
 		3B8F907D142295AC00EDBF11 /* Ball.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Ball.jpg; sourceTree = "<group>"; };
 		3B8F908B14229BE900EDBF11 /* Paddle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Paddle.jpg; sourceTree = "<group>"; };
 		506EDB87102F4C4000A389B3 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -829,6 +832,8 @@
 				BF151BD412E1372A00703484 /* HelloWorldScene.h */,
 				3B493753142325B400ACA725 /* MyContactListener.cpp */,
 				3B493754142325B400ACA725 /* MyContactListener.h */,
+				3B49376214232BBB00ACA725 /* GameOverScene.h */,
+				3B49376314232BBB00ACA725 /* GameOverScene.cpp */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1739,6 +1744,7 @@
 				D4D9411B13EADBF600555460 /* AppDelegate.cpp in Sources */,
 				D4C3D25A13F25E7D00192C16 /* RootViewController.mm in Sources */,
 				3B493755142325B400ACA725 /* MyContactListener.cpp in Sources */,
+				3B49376414232BBB00ACA725 /* GameOverScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

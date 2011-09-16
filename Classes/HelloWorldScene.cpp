@@ -194,7 +194,10 @@ void HelloWorld::tick(ccTime dt)
         
         if ((contact.fixtureA == _bottomFixture && contact.fixtureB == _ballFixture) ||
             (contact.fixtureA == _ballFixture && contact.fixtureB == _bottomFixture)) {
-            CCLog("Ball hit bottom!");
+            
+            GameOverScene *gameOverScene = GameOverScene::node();
+            gameOverScene->getLayer()->getLabel()->setString("You Lose! :[");
+            CCDirector::sharedDirector()->replaceScene(gameOverScene);
         }
     }
 }

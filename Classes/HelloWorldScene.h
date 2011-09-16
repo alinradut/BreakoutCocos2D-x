@@ -14,6 +14,7 @@
 #include "cocos2d.h"
 #include "Box2D.h"
 #include "MyContactListener.h"
+#include "GameOverScene.h"
 
 class HelloWorld : public cocos2d::CCLayer {
 public:
