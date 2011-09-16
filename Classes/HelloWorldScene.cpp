@@ -221,6 +221,7 @@ void HelloWorld::tick(ccTime dt)
 		}	
 	}
     
+    std::vector<b2Body *>toDestroy;
     std::vector<MyContact>::iterator pos;
     for(pos = _contactListener->_contacts.begin(); 
         pos != _contactListener->_contacts.end(); ++pos) {
@@ -228,14 +229,43 @@ void HelloWorld::tick(ccTime dt)
         
         if ((contact.fixtureA == _bottomFixture && contact.fixtureB == _ballFixture) ||
             (contact.fixtureA == _ballFixture && contact.fixtureB == _bottomFixture)) {
-            
             GameOverScene *gameOverScene = GameOverScene::node();
             gameOverScene->getLayer()->getLabel()->setString("You Lose! :[");
             CCDirector::sharedDirector()->replaceScene(gameOverScene);
-        }
+        } 
+        
+        b2Body *bodyA = contact.fixtureA->GetBody();
+        b2Body *bodyB = contact.fixtureB->GetBody();
+        if (bodyA->GetUserData() != NULL && bodyB->GetUserData() != NULL) {
+            CCSprite *spriteA = (CCSprite *) bodyA->GetUserData();
+            CCSprite *spriteB = (CCSprite *) bodyB->GetUserData();
+            
+            // Sprite A = ball, Sprite B = Block
+            if (spriteA->getTag() == 1 && spriteB->getTag() == 2) {
+                if (std::find(toDestroy.begin(), toDestroy.end(), bodyB) 
+                    == toDestroy.end()) {
+                    toDestroy.push_back(bodyB);
+                }
+            }
+            // Sprite B = block, Sprite A = ball
+            else if (spriteA->getTag() == 2 && spriteB->getTag() == 1) {
+                if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) 
+                    == toDestroy.end()) {
+                    toDestroy.push_back(bodyA);
+                }
+            }        
+        }                 
     }
     
-
+    std::vector<b2Body *>::iterator pos2;
+    for(pos2 = toDestroy.begin(); pos2 != toDestroy.end(); ++pos2) {
+        b2Body *body = *pos2;     
+        if (body->GetUserData() != NULL) {
+            CCSprite *sprite = (CCSprite *) body->GetUserData();
+            this->removeChild(sprite, true);
+        }
+        _world->DestroyBody(body);
+    }
 }
 
 void HelloWorld::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
