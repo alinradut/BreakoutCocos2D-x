@@ -10,6 +10,8 @@
 		3B493755142325B400ACA725 /* MyContactListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B493753142325B400ACA725 /* MyContactListener.cpp */; };
 		3B49376414232BBB00ACA725 /* GameOverScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B49376314232BBB00ACA725 /* GameOverScene.cpp */; };
 		3B49376614232D1800ACA725 /* Block.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3B49376514232D1800ACA725 /* Block.jpg */; };
+		3B49376814232FD900ACA725 /* background-music-aac.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3B49376714232FD900ACA725 /* background-music-aac.caf */; };
+		3B49376A14232FEC00ACA725 /* blip.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3B49376914232FEC00ACA725 /* blip.caf */; };
 		3B8F907E142295AC00EDBF11 /* Ball.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3B8F907D142295AC00EDBF11 /* Ball.jpg */; };
 		3B8F908C14229BE900EDBF11 /* Paddle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3B8F908B14229BE900EDBF11 /* Paddle.jpg */; };
 		505574581045D68500A31725 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 506EDBA4102F4C9F00A389B3 /* AVFoundation.framework */; };
@@ -382,6 +384,8 @@
 		3B49376214232BBB00ACA725 /* GameOverScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOverScene.h; sourceTree = "<group>"; };
 		3B49376314232BBB00ACA725 /* GameOverScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameOverScene.cpp; sourceTree = "<group>"; };
 		3B49376514232D1800ACA725 /* Block.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Block.jpg; sourceTree = "<group>"; };
+		3B49376714232FD900ACA725 /* background-music-aac.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "background-music-aac.caf"; sourceTree = "<group>"; };
+		3B49376914232FEC00ACA725 /* blip.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = blip.caf; sourceTree = "<group>"; };
 		3B8F907D142295AC00EDBF11 /* Ball.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Ball.jpg; sourceTree = "<group>"; };
 		3B8F908B14229BE900EDBF11 /* Paddle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Paddle.jpg; sourceTree = "<group>"; };
 		506EDB87102F4C4000A389B3 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -853,6 +857,8 @@
 		50F4144210692EE7002A0D5E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3B49376714232FD900ACA725 /* background-music-aac.caf */,
+				3B49376914232FEC00ACA725 /* blip.caf */,
 				3B8F907D142295AC00EDBF11 /* Ball.jpg */,
 				3B49376514232D1800ACA725 /* Block.jpg */,
 				3B8F908B14229BE900EDBF11 /* Paddle.jpg */,
@@ -1732,6 +1738,8 @@
 				3B8F907E142295AC00EDBF11 /* Ball.jpg in Resources */,
 				3B8F908C14229BE900EDBF11 /* Paddle.jpg in Resources */,
 				3B49376614232D1800ACA725 /* Block.jpg in Resources */,
+				3B49376814232FD900ACA725 /* background-music-aac.caf in Resources */,
+				3B49376A14232FEC00ACA725 /* blip.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

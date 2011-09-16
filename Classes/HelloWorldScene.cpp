@@ -8,6 +8,7 @@
 #include "HelloWorldScene.h"
 
 using namespace cocos2d;
+using namespace CocosDenshion;
 
 #define PTM_RATIO 32
 
@@ -165,6 +166,8 @@ HelloWorld::HelloWorld()
         
     }
     
+    SimpleAudioEngine::sharedEngine()->playBackgroundMusic("background-music-aac.caf");
+    
     this->schedule(schedule_selector(HelloWorld::tick));
 }
 
@@ -278,6 +281,11 @@ void HelloWorld::tick(ccTime dt)
         GameOverScene *gameOverScene = GameOverScene::node();
         gameOverScene->getLayer()->getLabel()->setString("You Win!");
         CCDirector::sharedDirector()->replaceScene(gameOverScene);
+    }
+    
+    if (toDestroy.size() > 0)
+    {
+        SimpleAudioEngine::sharedEngine()->playEffect("blip.caf");
     }
 }
 
