@@ -15,6 +15,7 @@ HelloWorld::~HelloWorld()
 {
     CC_SAFE_DELETE(_world);
     _groundBody = NULL;
+    delete _contactListener;
 }
 
 HelloWorld::HelloWorld()
@@ -48,7 +49,7 @@ HelloWorld::HelloWorld()
 	
 	// bottom
 	groundBox.SetAsEdge(b2Vec2(0,0), b2Vec2(winSize.width/PTM_RATIO,0));
-	_groundBody->CreateFixture(&groundBox, 0);
+	_bottomFixture = _groundBody->CreateFixture(&groundBox, 0);
 	
 	// top
 	groundBox.SetAsEdge(b2Vec2(0,winSize.height/PTM_RATIO), b2Vec2(winSize.width/PTM_RATIO,winSize.height/PTM_RATIO));
@@ -126,6 +127,10 @@ HelloWorld::HelloWorld()
     // in C++ you need to initialize objects to NULL
     _mouseJoint = NULL;
     
+    // Create contact listener
+    _contactListener = new MyContactListener();
+    _world->SetContactListener(_contactListener);
+    
     this->schedule(schedule_selector(HelloWorld::tick));
 }
 
@@ -181,6 +186,17 @@ void HelloWorld::tick(ccTime dt)
             }
 		}	
 	}
+    
+    std::vector<MyContact>::iterator pos;
+    for(pos = _contactListener->_contacts.begin(); 
+        pos != _contactListener->_contacts.end(); ++pos) {
+        MyContact contact = *pos;
+        
+        if ((contact.fixtureA == _bottomFixture && contact.fixtureB == _ballFixture) ||
+            (contact.fixtureA == _ballFixture && contact.fixtureB == _bottomFixture)) {
+            CCLog("Ball hit bottom!");
+        }
+    }
 }
 
 void HelloWorld::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)

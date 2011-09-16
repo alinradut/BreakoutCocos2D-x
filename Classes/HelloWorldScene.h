@@ -8,9 +8,12 @@
 #ifndef __HELLO_WORLD_H__
 #define __HELLO_WORLD_H__
 
+#define COCOS2D_DEBUG 1
+
 // When you import this file, you import all the cocos2d classes
 #include "cocos2d.h"
 #include "Box2D.h"
+#include "MyContactListener.h"
 
 class HelloWorld : public cocos2d::CCLayer {
 public:
@@ -34,6 +37,8 @@ private:
     b2Body *_paddleBody;
     b2Fixture *_paddleFixture;
     b2MouseJoint *_mouseJoint;
+    
+    MyContactListener *_contactListener;
 };
 
 #endif // __HELLO_WORLD_H__
