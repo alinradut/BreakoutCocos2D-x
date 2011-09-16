@@ -131,6 +131,40 @@ HelloWorld::HelloWorld()
     _contactListener = new MyContactListener();
     _world->SetContactListener(_contactListener);
     
+    for(int i = 0; i < 4; i++) {
+        
+        static int padding=20;
+        
+        // Create block and add it to the layer
+        CCSprite *block = CCSprite::spriteWithFile("Block.jpg");
+        int xOffset = padding+block->getContentSize().width/2+
+        ((block->getContentSize().width+padding)*i);
+        block->setPosition(ccp(xOffset, 250));
+        block->setTag(2);
+        this->addChild(block);
+        
+        // Create block body
+        b2BodyDef blockBodyDef;
+        blockBodyDef.type = b2_dynamicBody;
+        blockBodyDef.position.Set(xOffset/PTM_RATIO, 250/PTM_RATIO);
+        blockBodyDef.userData = block;
+        b2Body *blockBody = _world->CreateBody(&blockBodyDef);
+        
+        // Create block shape
+        b2PolygonShape blockShape;
+        blockShape.SetAsBox(block->getContentSize().width/PTM_RATIO/2,
+                            block->getContentSize().height/PTM_RATIO/2);
+        
+        // Create shape definition and add to body
+        b2FixtureDef blockShapeDef;
+        blockShapeDef.shape = &blockShape;
+        blockShapeDef.density = 10.0;
+        blockShapeDef.friction = 0.0;
+        blockShapeDef.restitution = 0.1f;
+        blockBody->CreateFixture(&blockShapeDef);
+        
+    }
+    
     this->schedule(schedule_selector(HelloWorld::tick));
 }
 
@@ -200,6 +234,8 @@ void HelloWorld::tick(ccTime dt)
             CCDirector::sharedDirector()->replaceScene(gameOverScene);
         }
     }
+    
+
 }
 
 void HelloWorld::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
